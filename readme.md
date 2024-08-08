@@ -31,36 +31,34 @@ pip freeze > requirements.txt
 
 Las proximas lineas del Dockerfile son:
 
+Le indica a docker que /app es el directorio de trabajo dentro de la imagen
 ```
 WORKDIR /app
-```
-Le indica a docker que /app es el directorio de trabajo dentro de la imagen
-
-
-```
-COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
 ```
 
 Copia los requisitos en el directorio y con el comando RUN los instala
 
 ```
-COPY . /app/
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
 ```
-
 Copia el resto del codigo de la aplicacion
 
 ```
-EXPOSE 8000
+COPY . /app/
 ```
 
 Indica que el container debe exponer el puerto 8000, que va ser por el que nos vamos a comunicar con la app
 
 ```
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+EXPOSE 8000
 ```
 
 Ejecuta el comando de python que hace correr el server de Django en el puerto 8000
+
+```
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+```
 
 ## Construyendo la imagen y probando
 
